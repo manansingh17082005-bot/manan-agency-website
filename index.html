@@ -15,6 +15,30 @@
     @media(max-width:850px){.nav-links{gap:15px}.hero-grid{grid-template-columns:1fr}.hero-video{min-height:390px}.about-grid,.experience-grid{grid-template-columns:1fr;gap:35px}.about-aside .big-number{font-size:4rem}.work-card,.work-card.wide{grid-column:span 3}.work-media,.work-card.wide .work-media{height:300px}.process-grid{grid-template-columns:repeat(2,1fr)}.contact-grid{gap:30px}}
     @media(max-width:620px){.wrap{width:min(var(--max),calc(100% - 30px))}.nav{height:68px}.menu-toggle{display:block}.nav-links{display:none;position:absolute;top:67px;left:0;right:0;background:#151514;padding:20px 22px 25px;flex-direction:column;align-items:stretch;border-bottom:1px solid var(--line)}.nav-links.open{display:flex}.nav-links .nav-cta{text-align:center}.hero{padding:55px 0 45px}.hero h1{font-size:clamp(2.8rem,13vw,4.4rem)}.hero-video{min-height:360px}.section{padding:72px 0}.section-head{align-items:start;flex-direction:column}.principles,.service-grid{grid-template-columns:1fr}.work-card,.work-card.wide{grid-column:span 6}.work-media,.work-card.wide .work-media{height:360px}.process-grid{grid-template-columns:1fr 1fr}.timeline-item{grid-template-columns:1fr;gap:7px}.contact-grid{grid-template-columns:1fr}.ticker-inner{justify-content:flex-start;gap:15px 24px}.cta-section{padding-bottom:70px}.cta-box:after{font-size:5rem;right:15px}.footer-inner{align-items:flex-start;flex-direction:column}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+  
+    /* CINE AI Studio */
+    .cine-studio{background:linear-gradient(180deg,#151514,#10100f)}
+    .cine-shell{border:1px solid rgba(213,251,105,.24);border-radius:24px;background:linear-gradient(145deg,rgba(213,251,105,.055),rgba(255,255,255,.018));padding:clamp(20px,4vw,38px)}
+    .cine-grid{display:grid;grid-template-columns:1fr .9fr;gap:26px;align-items:start}
+    .cine-copy h2{margin:16px 0}
+    .cine-copy>p{max-width:600px}
+    .cine-form{margin-top:24px}
+    .cine-form textarea{width:100%;min-height:150px;resize:vertical;background:#10100f;border:1px solid var(--line);border-radius:14px;padding:15px;color:var(--text);outline:none;line-height:1.6}
+    .cine-form textarea:focus{border-color:var(--lime)}
+    .cine-form label{display:block;margin-bottom:9px;color:#e7e4dc;font-size:.88rem;font-weight:700}
+    .cine-actions{display:flex;gap:11px;align-items:center;flex-wrap:wrap;margin-top:14px}
+    .cine-actions button{cursor:pointer}
+    .cine-status{min-height:26px;margin-top:14px;font-size:.88rem;color:var(--muted)}
+    .cine-status.error{color:#ff9d91}.cine-status.success{color:var(--lime)}
+    .cine-preview{min-height:330px;border:1px solid var(--line);border-radius:18px;background:#0b0b0a;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+    .cine-preview video{display:none;width:100%;max-height:520px;background:#000}
+    .cine-placeholder{text-align:center;padding:35px;color:var(--muted)}
+    .cine-placeholder .cine-symbol{font-size:3rem;color:var(--lime);display:block;margin-bottom:12px}
+    .cine-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:.78rem;color:var(--muted)}
+    .cine-sample{display:inline-block;margin-top:12px;color:var(--lime);font-size:.82rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;background:none;border:0;padding:0}
+    .cine-note{font-size:.78rem;color:var(--muted);margin-top:12px}
+    @media(max-width:850px){.cine-grid{grid-template-columns:1fr}.cine-preview{min-height:260px}}
+
   </style>
 </head>
 <body>
@@ -22,7 +46,7 @@
     <a class="brand" href="#home">MANAN SINGH<span>®</span></a>
     <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">Menu ☰</button>
     <nav class="nav-links" id="navLinks" aria-label="Main navigation">
-      <a href="#about">About</a><a href="#services">Services</a><a href="#work">Our Work</a><a href="#experience">Experience</a><a class="nav-cta" href="#contact">Let's talk ↗</a>
+      <a href="#about">About</a><a href="#services">Services</a><a href="#cine-studio">CINE AI Studio</a><a href="#work">Our Work</a><a href="#experience">Experience</a><a class="nav-cta" href="#contact">Let's talk ↗</a>
     </nav>
   </div></header>
 
@@ -57,6 +81,27 @@
         <article class="service-card"><div><div class="service-top"><span class="service-icon">✳</span><span class="service-num">03 / CONTENT</span></div><h3>Content Creation & Promotion</h3><p>Creative concepts and promotional content that highlight your products, services, space, team or customer experience.</p></div></article>
         <article class="service-card"><div><div class="service-top"><span class="service-icon">◇</span><span class="service-num">04 / DESIGN</span></div><h3>Logo & Brand Design</h3><p>Distinctive logo concepts and simple visual assets to help your business look more recognisable and professional.</p></div></article>
       </div>
+    </div></section>
+
+
+    <section class="section cine-studio" id="cine-studio"><div class="wrap">
+      <div class="section-head"><div><span class="eyebrow">Powered by CINE AI</span><h2 style="margin-top:17px">Turn your imagination<br>into a moving scene.</h2></div><p>Describe a world, a character, the atmosphere and the action. CINE AI transforms your prompt into a cinematic pixel-art video.</p></div>
+      <div class="cine-shell"><div class="cine-grid">
+        <div class="cine-copy">
+          <span class="eyebrow">CINE AI Studio · V3</span>
+          <h3 style="font-size:1.55rem;margin-top:12px">Create your video</h3>
+          <p>Start with a scene idea. Be specific about the location, characters, movement, weather and time of day.</p>
+          <form class="cine-form" id="cineForm">
+            <label for="cinePrompt">Your scene prompt</label>
+            <textarea id="cinePrompt" minlength="5" maxlength="1200" required placeholder="Example: A Rajput warrior in golden armor riding a powerful horse outside a grand Rajasthan fort at sunset, with flags waving and dust rising, epic cinematic atmosphere."></textarea>
+            <button type="button" class="cine-sample" id="cineSample">Use the Rajput warrior example</button>
+            <div class="cine-actions"><button class="btn" id="cineGenerate" type="submit">Generate video ↗</button><button class="btn secondary" id="cineCheck" type="button">Check engine</button></div>
+            <div class="cine-status" id="cineStatus" role="status" aria-live="polite">Checking your local CINE AI engine is available when you press “Check engine”.</div>
+            <p class="cine-note">Local test mode: your prompt is sent to the CINE AI engine running on your computer. Keep your computer awake while rendering.</p>
+          </form>
+        </div>
+        <div><div class="cine-preview" id="cinePreview"><div class="cine-placeholder" id="cinePlaceholder"><span class="cine-symbol">▶</span><strong>Your generated video will appear here</strong><p style="margin-top:8px;font-size:.85rem">Write a prompt and select Generate video.</p></div><video id="cineVideo" controls playsinline></video></div><div class="cine-meta"><span>Output · MP4</span><span id="cineMeta">Waiting for your first generation</span></div></div>
+      </div></div>
     </div></section>
 
     <section class="section" id="work"><div class="wrap"><div class="section-head"><div><span class="eyebrow">Selected projects</span><h2 style="margin-top:17px">A look at our work.</h2></div><p>From food and café content to product-focused promotions, here's a selection of video work from the portfolio.</p></div>
@@ -102,6 +147,61 @@
   <footer class="footer"><div class="wrap footer-inner"><a class="brand" href="#home">MANAN SINGH<span>®</span></a><p>Freelance creative services · Social media management · Video editing</p><div class="footer-links"><a href="#services">Services</a><a href="#work">Portfolio</a><a href="#contact">Contact</a></div><p>© <span id="year"></span> Manan Singh. All rights reserved.</p></div></footer>
   <script>
     const toggle=document.getElementById('menuToggle');const nav=document.getElementById('navLinks');toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'Close ✕':'Menu ☰'});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='Menu ☰'}));
+
+    // CINE AI Studio: connects this page to the local CINE AI V3 API.
+    (() => {
+      const api='http://127.0.0.1:8000';
+      const form=document.getElementById('cineForm');
+      if(!form) return;
+      const prompt=document.getElementById('cinePrompt');
+      const status=document.getElementById('cineStatus');
+      const generate=document.getElementById('cineGenerate');
+      const check=document.getElementById('cineCheck');
+      const video=document.getElementById('cineVideo');
+      const placeholder=document.getElementById('cinePlaceholder');
+      const meta=document.getElementById('cineMeta');
+      const sample='A Rajput warrior in golden armor riding a powerful horse outside a grand Rajasthan fort at sunset, with flags waving and dust rising, epic cinematic atmosphere.';
+      const setStatus=(message,type='')=>{status.textContent=message;status.className='cine-status '+type;};
+      async function checkEngine(){
+        setStatus('Connecting to your local CINE AI engine…');
+        try{
+          const r=await fetch(api+'/',{method:'GET'});
+          if(!r.ok) throw new Error('Engine returned HTTP '+r.status);
+          const data=await r.json();
+          setStatus('Engine online · '+(data.engine||'CINE AI')+' is ready.','success');
+          return true;
+        }catch(e){
+          setStatus('Engine not reachable. Start the CINE AI local API on your computer, then try again. ('+e.message+')','error');
+          return false;
+        }
+      }
+      check.addEventListener('click',checkEngine);
+      document.getElementById('cineSample').addEventListener('click',()=>{prompt.value=sample;prompt.focus();});
+      form.addEventListener('submit',async e=>{
+        e.preventDefault();
+        const text=prompt.value.trim();
+        if(text.length<5){setStatus('Please enter a scene description (at least 5 characters).','error');return;}
+        generate.disabled=true;generate.textContent='Generating…';check.disabled=true;
+        setStatus('Your scene is being interpreted and rendered. This can take a few minutes. Keep this tab open.');
+        meta.textContent='Rendering in progress…';
+        try{
+          const r=await fetch(api+'/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:text})});
+          const data=await r.json().catch(()=>({}));
+          if(!r.ok) throw new Error(data.detail||'Generation failed (HTTP '+r.status+').');
+          if(!data.video_url) throw new Error('The engine did not return a video link.');
+          video.src=api+data.video_url;video.style.display='block';placeholder.style.display='none';
+          video.load();meta.textContent='Generated · '+(data.file_size?Math.round(data.file_size/1024)+' KB':'MP4');
+          setStatus('Video generated successfully. Your CINE AI creation is ready to play.','success');
+          video.scrollIntoView({behavior:'smooth',block:'center'});
+        }catch(err){
+          setStatus(err.message+' If this is a browser permission or CORS error, the local API needs the website origin added to its allowed origins.','error');
+          meta.textContent='Generation unsuccessful';
+        }finally{
+          generate.disabled=false;generate.textContent='Generate video ↗';check.disabled=false;
+        }
+      });
+    })();
+
     document.getElementById('year').textContent=new Date().getFullYear();
     document.getElementById('leadForm').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('name').value.trim();const business=document.getElementById('business').value.trim();const service=document.getElementById('service').value;const message=document.getElementById('message').value.trim();const body=`Hi Manan, I'd like to discuss your services.\n\nName: ${name}\nBusiness: ${business}\nService needed: ${service}\nGoals/details: ${message||'Not provided'}\n\nPlease let me know the next steps.`;window.open('https://wa.me/919205306654?text='+encodeURIComponent(body),'_blank','noopener');});
   </script>

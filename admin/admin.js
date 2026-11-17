@@ -1,5 +1,5 @@
 (() => {
-const $=id=>document.getElementById(id), PROJECT_EMAIL="dhruv170825@gmail.com";
+const $=id=>document.getElementById(id), PROJECT_EMAIL="dhruv17825@gmail.com";
 const db=window.supabase?.createClient(window.ALPHA_SUPABASE_URL,window.ALPHA_SUPABASE_ANON_KEY);
 let user=null,activeView="overview",cache={};
 const views={overview:"Overview",leads:"Leads & enquiries",clients:"Clients",projects:"Projects & contracts",services:"Services & pricing",portfolio:"Portfolio videos",reviews:"Client reviews",payments:"Payments"};

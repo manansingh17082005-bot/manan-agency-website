@@ -31,7 +31,8 @@
     status.className = "note";
     status.textContent = "Free discovery source: OpenStreetMap public business listings.";
     form.append(status);
-    const notice = $(".agent-notice"); if (notice) { const heading = $("b", notice); const copy = $("p", notice); if (heading) heading.textContent = "Public lead discovery connected · outreach is draft-only"; if (copy) copy.textContent = "ALPHA AI now searches OpenStreetMap public business listings, applies transparent heuristic scores, deduplicates records and saves prospects plus draft messages. Public map data may be incomplete; verify details before contact. No messages are sent automatically."; }\n    const grid = $(".agent-grid");
+    const notice = $(".agent-notice"); if (notice) { const heading = $("b", notice); const copy = $("p", notice); if (heading) heading.textContent = "Public lead discovery connected · outreach is draft-only"; if (copy) copy.textContent = "ALPHA AI now searches OpenStreetMap public business listings, applies transparent heuristic scores, deduplicates records and saves prospects plus draft messages. Public map data may be incomplete; verify details before contact. No messages are sent automatically."; }
+    const grid = $(".agent-grid");
     if (grid && !$("#alphaAiHistory")) {
       const panel = document.createElement("section");
       panel.className = "panel agent-history-panel";

@@ -14,7 +14,34 @@ function table(headers,body){return '<div class="table-panel"><div class="table-
 function metric(label,value,sub){return '<div class="metric"><span class="metric-label">'+label+'</span><strong>'+value+'</strong><small>'+sub+'</small></div>'}
 function btn(label,action,cls="action-btn"){return '<button class="'+cls+'" data-action="'+action+'">'+label+'</button>'}
 async function loadAll(){const names=["agency_leads","client_agreements","agreement_payments","client_reviews","service_catalog","portfolio_items"];for(const n of names)await rows(n)}
-async function overview(){await loadAll();const leads=cache.agency_leads,agreements=cache.client_agreements,payments=cache.agreement_payments,reviews=cache.client_reviews;const pending=reviews.filter(x=>x.status==="pending").length;const received=payments.filter(x=>x.status==="received").reduce((a,x)=>a+Number(x.amount||0),0);const recent=leads.slice(0,6).map(x=>'<tr><td><b>'+esc(x.name)+'</b><br><small>'+esc(x.business_name||"")+'</small></td><td>'+esc(x.service_interest||"—")+'</td><td>'+esc(x.phone||x.email||"—")+'</td><td>'+statusBadge(x.status)+'</td><td>'+new Date(x.created_at).toLocaleDateString("en-IN")+'</td></tr>').join("");return '<div class="welcome-row"><div><span class="eyebrow">YOUR BUSINESS AT A GLANCE</span><h1>Good to see you, Founder.</h1><p>Here is what is happening across ALPHA CREATIVE today.</p></div><span class="badge approved">OWNER ACCESS ACTIVE</span></div><div class="metrics">'+metric("TOTAL ENQUIRIES",leads.length,"All incoming leads")+metric("ACTIVE CONTRACTS",agreements.filter(x=>["pending","accepted"].includes(x.status)).length,"Pending or accepted")+metric("REVIEW APPROVALS",pending,"Waiting for your review")+metric("PAYMENTS RECEIVED",money(received),"Recorded payments")+'</div><div class="dashboard-grid"><section class="panel"><div class="panel-head"><div><h3>Latest enquiries</h3><p>New opportunities for the agency</p></div>'+btn("View all →","go-leads")+'</div>'+table(["CONTACT","SERVICE","PHONE / EMAIL","STATUS","DATE"],recent)+'</section><section class="panel"><div class="panel-head"><div><h3>Quick actions</h3><p>Keep your agency moving</p></div></div><div class="record-list">'+[['Add a new lead','go-leads'],['Create a project agreement','go-projects'],['Update service pricing','go-services'],['Upload portfolio work','go-portfolio'],['Approve client reviews','go-reviews']].map(x=>'<div class="record"><strong>'+x[0]+'</strong>'+btn("Open →",x[1])+'</div>').join("")+'</div></section></div>'}
+function overview(){
+ // Paint the founder dashboard immediately. Fetch compact summaries in parallel.
+ const placeholder='<span class="metric-value">—</span>';
+ const html='<div class="welcome-row"><div><span class="eyebrow">YOUR BUSINESS AT A GLANCE</span><h1>Good to see you, Founder.</h1><p>Here is what is happening across ALPHA CREATIVE today.</p></div><span class="badge approved">OWNER ACCESS ACTIVE</span></div><div class="metrics">'+
+ metric("TOTAL ENQUIRIES",'<span id="ovLeadCount">…</span>',"All incoming leads")+
+ metric("ACTIVE CONTRACTS",'<span id="ovAgreementCount">…</span>',"Pending or accepted")+
+ metric("REVIEW APPROVALS",'<span id="ovReviewCount">…</span>',"Waiting for your review")+
+ metric("PAYMENTS RECEIVED",'<span id="ovPaymentTotal">…</span>',"Recorded payments")+
+ '</div><div class="dashboard-grid"><section class="panel"><div class="panel-head"><div><h3>Latest enquiries</h3><p>New opportunities for the agency</p></div>'+btn("View all →","go-leads")+'</div><div id="ovRecentLeads" class="note">Loading recent enquiries…</div></section><section class="panel"><div class="panel-head"><div><h3>Quick actions</h3><p>Keep your agency moving</p></div></div><div class="record-list">'+[['Add a new lead','go-leads'],['Create a project agreement','go-projects'],['Update service pricing','go-services'],['Upload portfolio work','go-portfolio'],['Approve client reviews','go-reviews']].map(x=>'<div class="record"><strong>'+x[0]+'</strong>'+btn("Open →",x[1])+'</div>').join("")+'</div></section></div>';
+ Promise.all([
+  db.from("agency_leads").select("id,name,business_name,service_interest,phone,email,status,created_at",{count:"exact"}).order("created_at",{ascending:false}).limit(6),
+  db.from("client_agreements").select("id,status",{count:"exact"}).in("status",["pending","accepted"]).limit(1),
+  db.from("client_reviews").select("id,status",{count:"exact"}).eq("status","pending").limit(1),
+  db.from("agreement_payments").select("amount,status").eq("status","received").limit(300)
+ ]).then(([leadRes,agreementRes,reviewRes,paymentRes])=>{
+  if(leadRes.error)throw leadRes.error;if(agreementRes.error)throw agreementRes.error;if(reviewRes.error)throw reviewRes.error;if(paymentRes.error)throw paymentRes.error;
+  const put=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=String(value)};
+  put("ovLeadCount",leadRes.count??"—");put("ovAgreementCount",agreementRes.count??"—");put("ovReviewCount",reviewRes.count??"—");
+  const received=(paymentRes.data||[]).reduce((sum,x)=>sum+Number(x.amount||0),0);put("ovPaymentTotal",money(received));
+  const recent=(leadRes.data||[]).map(x=>'<tr><td><b>'+esc(x.name)+'</b><br><small>'+esc(x.business_name||"")+'</small></td><td>'+esc(x.service_interest||"—")+'</td><td>'+esc(x.phone||x.email||"—")+'</td><td>'+statusBadge(x.status)+'</td><td>'+new Date(x.created_at).toLocaleDateString("en-IN")+'</td></tr>').join("");
+  const node=document.getElementById("ovRecentLeads");if(node)node.outerHTML=table(["CONTACT","SERVICE","PHONE / EMAIL","STATUS","DATE"],recent);
+ }).catch(error=>{
+  ["ovLeadCount","ovAgreementCount","ovReviewCount","ovPaymentTotal"].forEach(id=>putSafe(id,"—"));
+  const node=document.getElementById("ovRecentLeads");if(node)node.textContent="Dashboard summaries are temporarily unavailable. Other admin sections remain accessible.";
+ });
+ function putSafe(id,value){const el=document.getElementById(id);if(el)el.textContent=value;}
+ return html;
+}
 function getAgentConfig(){try{return JSON.parse(localStorage.getItem("alphaAiAgentConfig")||"{}")}catch{return {}}}
 function alphaAI(){
  // Render the control panel immediately; fetch CRM metrics without blocking the UI.

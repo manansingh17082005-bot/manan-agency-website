@@ -1,27 +1,38 @@
-# ALPHA CREATIVE portals — setup guide
+# ALPHA CREATIVE — founder portal setup
 
-## What is now in the repository
-- `/admin/`: founder sign-in and admin dashboard shell.
-- `/client/`: client sign-in and client workspace shell.
-- `portal.js`: Supabase authentication and role-gated data loading.
-- `supabase/schema.sql`: database tables and row-level security policies.
-- `supabase-config.js`: browser-safe project URL and publishable/anon key placeholders.
+## Current project
+- Public website: https://manansingh17082005-bot.github.io/manan-agency-website/
+- Founder portal: https://manansingh17082005-bot.github.io/manan-agency-website/admin/
+- Supabase project: **Alpha Creative Agency** (`opglxlyiekwcesxbxhbn`)
+- Project URL and browser-safe publishable key are configured in `supabase-config.js`.
+- The founder portal is restricted to the authorised owner email **dhruv170825@gmail.com** and checks the signed-in user's Supabase `app_metadata.role = owner`. Database RLS policies enforce the same owner role.
 
-## Important: login cannot work until the backend is connected
-GitHub Pages only hosts the website. It does not create accounts or securely store client data. A separate Supabase project for ALPHA CREATIVE is required. Do not reuse credentials from another project.
+## First-time owner account
+1. Open the Founder portal URL above.
+2. Enter the authorised owner email and choose a strong password (at least 8 characters).
+3. Click **FIRST-TIME OWNER ACCOUNT SETUP**.
+4. Check that email inbox and confirm the email address if Supabase asks for verification.
+5. Return to the portal and sign in. The deployed `alpha-owner-bootstrap` Edge Function verifies the signed-in user's email and then assigns the owner role using the server-side Supabase Admin API.
+6. The function is JWT-protected. The service-role key stays inside the Supabase Edge Function environment and is never placed in the website.
 
-1. Create a Supabase project for ALPHA CREATIVE.
-2. In its SQL Editor, run `supabase/schema.sql`.
-3. In Project Settings → API, copy the Project URL and the publishable key (or legacy anon key). Put them in `supabase-config.js`.
-4. In Authentication → Users, invite/create Manan and Abhinav with their own email addresses and strong passwords. Do not put passwords in GitHub or share them with the developer.
-5. In SQL Editor, use each invited user's Auth UID to create the two admin profiles:
-   `insert into public.profiles (id, full_name, role) values ('AUTH-UID-FOR-MANAN','Manan Singh','admin'), ('AUTH-UID-FOR-ABHINAV','Abhinav','admin');`
-   Replace both placeholder UID strings with the real Auth user UUIDs before running.
-6. Create client rows, then create each client's profile using that Auth UID and matching client_id. Never grant a client the admin role.
-7. Enable email confirmation / password recovery in Supabase Auth. Add your GitHub Pages URL to Authentication → URL Configuration → Site URL and Redirect URLs.
+If sign-up is disabled in Supabase Auth, enable email sign-ups temporarily in Authentication settings. If email confirmation is enabled, complete that step before signing in. Do not create any additional owner accounts.
 
-## Security notes
-- Only the publishable/anon key belongs in the browser. NEVER use a Supabase service_role key in GitHub Pages, HTML, JavaScript, or chat.
-- Keep RLS enabled. The schema restricts client project/document reads to the matching client workspace; only admins can manage agency records.
-- The SQL creates the initial core portal data model. Storage bucket policies, file upload UI, invoices/payments, and full CRM editing are not included yet.
-- The admin page is role-gated, not hidden by an untrusted front-end flag. Supabase RLS enforces database access.
+## Admin portal modules
+- Overview metrics and recent enquiries.
+- Leads & enquiries: add leads and update lead status.
+- Clients: client directory derived from project agreements.
+- Projects & contracts: create agreements and update contract status.
+- Services & pricing: add/edit services, starting prices and negotiable pricing notes; hide or activate services.
+- Portfolio videos: upload video/image files (max 100 MB) or add media URLs; keep drafts or publish them.
+- Client reviews: approve or reject submitted reviews.
+- Payments: record payments and mark payment records received.
+
+The public contact form now saves new enquiries to `agency_leads` and then opens WhatsApp as an additional contact option.
+
+## Backend and security
+- Additive migration: `supabase/migrations/20261117_alpha_agency_admin_portal.sql`. It has been applied to the Alpha Creative Agency Supabase project.
+- Existing agreement, payment and review tables are retained. New `agency_leads`, `service_catalog`, and `portfolio_items` tables have RLS enabled.
+- The `agency-portfolio` Storage bucket is public-read for published portfolio media; uploads/updates/deletes require an authenticated owner JWT.
+- Only the publishable key is included in `supabase-config.js`. Never put a service-role/secret key in GitHub, HTML, JavaScript or chat.
+- Security advisor check after the migration returned no lints.
+- This is an early production integration: public agreement signing links/PDF generation and fully synchronized public service/portfolio sections still need their next implementation pass. Review the agreement wording and payment terms with your own legal/accounting adviser before using them as binding documents.

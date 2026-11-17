@@ -1,7 +1,8 @@
 (() => {
   const $ = (s, root=document) => root.querySelector(s);
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const db = window.supabase?.createClient(window.ALPHA_SUPABASE_URL, window.ALPHA_SUPABASE_ANON_KEY);
+  const db = window.ALPHA_SUPABASE_CLIENT || window.supabase?.createClient(window.ALPHA_SUPABASE_URL, window.ALPHA_SUPABASE_ANON_KEY);
+  if (db) window.ALPHA_SUPABASE_CLIENT = db;
   if (!db) return;
   let historyBusy = false;
   let historyLoaded = false;

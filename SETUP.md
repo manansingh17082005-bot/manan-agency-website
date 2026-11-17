@@ -5,7 +5,7 @@
 - Founder portal: https://manansingh17082005-bot.github.io/manan-agency-website/admin/
 - Supabase project: **Alpha Creative Agency** (`opglxlyiekwcesxbxhbn`)
 - Project URL and browser-safe publishable key are configured in `supabase-config.js`.
-- The founder portal is restricted to the authorised owner email **dhruv170825@gmail.com** and checks the signed-in user's Supabase `app_metadata.role = owner`. Database RLS policies enforce the same owner role.
+- The founder portal is restricted to the authorised owner email **dhruv17825@gmail.com** and checks the signed-in user's Supabase `app_metadata.role = owner`. Database RLS policies enforce the same owner role.
 
 ## First-time owner account
 1. Open the Founder portal URL above.

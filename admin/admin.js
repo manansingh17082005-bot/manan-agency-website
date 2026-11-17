@@ -1,6 +1,7 @@
 (() => {
 const $=id=>document.getElementById(id), PROJECT_EMAIL="dhruv17825@gmail.com";
-const db=window.supabase?.createClient(window.ALPHA_SUPABASE_URL,window.ALPHA_SUPABASE_ANON_KEY);
+const db=window.ALPHA_SUPABASE_CLIENT || window.supabase?.createClient(window.ALPHA_SUPABASE_URL,window.ALPHA_SUPABASE_ANON_KEY);
+if(db) window.ALPHA_SUPABASE_CLIENT = db;
 let user=null,activeView="overview",cache={};
 const views={overview:"Overview","alpha-ai":"ALPHA AI Agent",leads:"Leads & enquiries",clients:"Clients",projects:"Projects & contracts",services:"Services & pricing",portfolio:"Portfolio videos",reviews:"Client reviews",payments:"Payments"};
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));

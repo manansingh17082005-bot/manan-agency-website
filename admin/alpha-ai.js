@@ -4,6 +4,7 @@
   const db = window.supabase?.createClient(window.ALPHA_SUPABASE_URL, window.ALPHA_SUPABASE_ANON_KEY);
   if (!db) return;
   let historyBusy = false;
+  let historyLoaded = false;
 
   function profile(form) {
     const values = name => Array.from(form.elements[name] || []).filter(x => x.checked).map(x => x.value);
@@ -42,12 +43,12 @@
       panel.id = "alphaAiHistory";
       panel.innerHTML = '<div class="panel-head"><div><h3>Agent activity & outreach drafts</h3><p>Saved server-side in your ALPHA CREATIVE CRM</p></div><button type="button" class="action-btn" id="alphaAiRefresh">REFRESH</button></div><div class="agent-history-columns"><div><b>Recent discovery runs</b><div id="alphaAiRuns" class="record-list"><p class="note">Loading activity…</p></div></div><div><b>Personalised drafts</b><div id="alphaAiDrafts" class="agent-drafts"><p class="note">Loading drafts…</p></div></div></div>';
       grid.insertAdjacentElement("afterend", panel);
-      $("#alphaAiRefresh").addEventListener("click", loadHistory);
+      $("#alphaAiRefresh").addEventListener("click", () => loadHistory(true));
     }
     loadHistory();
   }
-  async function loadHistory() {
-    if (historyBusy || !$("#alphaAiHistory")) return;
+  async function loadHistory(force = false) {
+    if (historyBusy || !$("#alphaAiHistory") || (historyLoaded && !force)) return;
     historyBusy = true;
     try {
       const [runs, drafts] = await Promise.all([
@@ -58,6 +59,7 @@
       if (drafts.error) throw drafts.error;
       $("#alphaAiRuns").innerHTML = runs.data.length ? runs.data.map(r => '<div class="record"><div><strong>'+esc(r.status.toUpperCase())+'</strong><p>'+esc(r.summary || "Lead discovery run")+'</p><small>'+new Date(r.started_at).toLocaleString("en-IN")+'</small></div><span>'+Number(r.inserted_count||0)+' saved</span></div>').join("") : '<p class="note">No runs yet. Start your first scan.</p>';
       $("#alphaAiDrafts").innerHTML = drafts.data.length ? drafts.data.map(d => '<article class="agent-draft"><b>'+esc(d.subject||"Outreach draft")+'</b><small>'+esc(d.agency_leads?.business_name||"Prospect")+' · '+esc(d.status)+'</small><p>'+esc(d.message)+'</p></article>').join("") : '<p class="note">Drafts will appear after discovery.</p>';
+      historyLoaded = true;
     } catch (e) {
       if ($("#alphaAiRuns")) $("#alphaAiRuns").innerHTML = '<p class="note">'+esc(e.message||e)+'</p>';
     } finally { historyBusy = false; }
@@ -95,7 +97,7 @@
         if (error) throw error;
         if (!data?.success) throw new Error(data?.error || "Discovery did not complete.");
         $("#alphaAiRunStatus").textContent = data.summary;
-        await loadHistory();
+        await loadHistory(true);
         const nav = $('[data-view="alpha-ai"]');
         if (nav) nav.click();
       } catch (err) {

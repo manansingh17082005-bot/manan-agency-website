@@ -15,7 +15,7 @@
 5. Return to the portal and sign in. The deployed `alpha-owner-bootstrap` Edge Function verifies the signed-in user's email and then assigns the owner role using the server-side Supabase Admin API.
 6. The function is JWT-protected. The service-role key stays inside the Supabase Edge Function environment and is never placed in the website.
 
-If sign-up is disabled in Supabase Auth, enable email sign-ups temporarily in Authentication settings. If email confirmation is enabled, complete that step before signing in. Do not create any additional owner accounts.
+If sign-up is disabled in Supabase Auth, enable email sign-ups temporarily in Authentication settings. In Authentication → URL Configuration, add `https://manansingh17082005-bot.github.io/manan-agency-website/admin/` to the allowed Redirect URLs. If email confirmation is enabled, complete that step before signing in. Do not create any additional owner accounts.
 
 ## Admin portal modules
 - Overview metrics and recent enquiries.

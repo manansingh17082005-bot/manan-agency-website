@@ -17,20 +17,23 @@
   }
   function inject() {
     const form = $("#alphaAiConfigForm");
-    if (!form || $("#alphaAiRunBtn")) return;
+    if (!form) return;
     const actions = $(".form-actions", form);
-    if (!actions) return;
-    const run = document.createElement("button");
-    run.type = "button";
-    run.id = "alphaAiRunBtn";
-    run.className = "action-btn gold-btn";
-    run.textContent = "RUN LEAD DISCOVERY";
-    actions.append(run);
-    const status = document.createElement("p");
-    status.id = "alphaAiRunStatus";
-    status.className = "note";
-    status.textContent = "Free discovery source: OpenStreetMap public business listings.";
-    form.append(status);
+    if (actions && !$("#alphaAiRunBtn")) {
+      const run = document.createElement("button");
+      run.type = "button";
+      run.id = "alphaAiRunBtn";
+      run.className = "action-btn gold-btn";
+      run.textContent = "RUN LEAD DISCOVERY";
+      actions.append(run);
+    }
+    if (!$("#alphaAiRunStatus")) {
+      const status = document.createElement("p");
+      status.id = "alphaAiRunStatus";
+      status.className = "note";
+      status.textContent = "Free discovery source: OpenStreetMap public business listings.";
+      form.append(status);
+    }
     const notice = $(".agent-notice"); if (notice) { const heading = $("b", notice); const copy = $("p", notice); if (heading) heading.textContent = "Public lead discovery connected · outreach is draft-only"; if (copy) copy.textContent = "ALPHA AI now searches OpenStreetMap public business listings, applies transparent heuristic scores, deduplicates records and saves prospects plus draft messages. Public map data may be incomplete; verify details before contact. No messages are sent automatically."; }
     const grid = $(".agent-grid");
     if (grid && !$("#alphaAiHistory")) {

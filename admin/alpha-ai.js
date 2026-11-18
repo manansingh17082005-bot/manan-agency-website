@@ -110,9 +110,8 @@
         if (error) throw error;
         if (!data?.success) throw new Error(data?.error || "Discovery did not complete.");
         $("#alphaAiRunStatus").textContent = data.summary;
-        await loadHistory(true);
-        const nav = $('[data-view="alpha-ai"]');
-        if (nav) nav.click();
+        // Refresh activity without making the Run button wait for the history panel.
+        loadHistory(true).catch(() => {});
       } catch (err) {
         $("#alphaAiRunStatus").textContent = "Discovery failed: " + (err.message || String(err));
       } finally {

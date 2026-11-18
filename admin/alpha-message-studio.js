@@ -87,12 +87,21 @@
       <div class="ams-backdrop" data-ams-close></div>
       <section class="ams-dialog" role="dialog" aria-modal="true" aria-labelledby="ams-title">
         <header class="ams-head"><div><span>ALPHA CREATIVE · MESSAGE STUDIO</span><h2 id="ams-title">Create personalised outreach</h2><p id="ams-prospect"></p></div><button type="button" class="ams-close" data-ams-close aria-label="Close">×</button></header>
+        <div class="ams-chat">
+          <div class="ams-chat-title">✦ ALPHA AI MESSAGE ASSISTANT <span>Describe what you want in your own words</span></div>
+          <div class="ams-chat-bubble">Tell me the purpose, tone and details. For example: “Write a short, professional WhatsApp follow-up for my data-cleaning service and ask for a 10-minute call.”</div>
+          <label class="ams-prompt-label" for="ams-prompt">YOUR MESSAGE INSTRUCTIONS</label>
+          <textarea id="ams-prompt" rows="3" placeholder="Type naturally, just like you are chatting with me…"></textarea>
+          <button type="button" id="ams-send-prompt">GENERATE FROM MY INSTRUCTIONS ↗</button>
+          <p id="ams-understood" aria-live="polite">I'll use the selected prospect's details and create editable drafts for you.</p>
+        </div>
+        <details class="ams-advanced"><summary>Advanced controls (optional)</summary>
         <div class="ams-controls">
           <label>Service to pitch<select id="ams-service"></select></label>
           <label>Message tone<select id="ams-tone"></select></label>
           <label>Conversation stage<select id="ams-stage"></select></label>
           <label>Channel<select id="ams-channel"></select></label>
-        </div>
+        </div></details>
         <div class="ams-toolbar"><b>Three message options</b><button type="button" id="ams-generate">GENERATE OPTIONS</button></div>
         <div id="ams-options"></div>
         <p class="ams-foot">Drafts are generated from editable templates using the prospect details shown. Review all claims and personalisation before contact. Nothing is sent automatically.</p>
@@ -107,6 +116,7 @@
       .ams-dialog{position:relative;margin:3vh auto;width:min(900px,calc(100% - 24px));max-height:94vh;overflow:auto;background:#121a21;border:1px solid #806b45;border-radius:18px;padding:23px;box-shadow:0 25px 100px #000b}
       .ams-head{display:flex;justify-content:space-between;gap:15px}.ams-head span{font-size:10px;letter-spacing:2px;color:#d6b269}.ams-head h2{font-size:22px;margin:7px 0}.ams-head p{font-size:12px;color:#abb3bc;margin:0 0 16px}.ams-close{border:0;background:none;color:#fff;font-size:28px;cursor:pointer}
       .ams-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.ams-controls label{font-size:10px;color:#d6b269;display:grid;gap:7px}.ams-controls select{width:100%;min-width:0;background:#0b1117;color:#eee;border:1px solid #39434e;border-radius:8px;padding:10px;font-size:12px}
+      .ams-chat{margin:15px 0;padding:15px;border:1px solid #394653;border-radius:13px;background:linear-gradient(145deg,#17232d,#101820)}.ams-chat-title{font-size:12px;font-weight:800;letter-spacing:.7px;color:#e0bd78}.ams-chat-title span{display:block;font-size:11px;font-weight:400;letter-spacing:0;color:#aeb8c1;margin-top:4px}.ams-chat-bubble{margin:12px 0;padding:11px 13px;border-radius:12px 12px 12px 3px;background:#243440;color:#e8edf0;font-size:12px;line-height:1.55;max-width:90%}.ams-prompt-label{display:block;color:#d6b269;font-size:10px;font-weight:800;margin:12px 0 6px}.ams-chat textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:76px;background:#0b1117;color:#fff;border:1px solid #465563;border-radius:9px;padding:12px;font:13px/1.5 inherit}.ams-chat textarea:focus{outline:1px solid #d6b269;border-color:#d6b269}.ams-chat #ams-send-prompt{margin-top:9px;background:#d6b269;color:#17130b;border:1px solid #d6b269;border-radius:8px;padding:10px 14px;font-weight:800;font-size:10px;cursor:pointer}.ams-chat #ams-understood{margin:9px 0 0;color:#b9c2ca;font-size:11px;line-height:1.5}.ams-advanced{margin:12px 0;color:#d6b269;font-size:11px}.ams-advanced summary{cursor:pointer;margin-bottom:10px}
       .ams-toolbar{display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px;font-size:12px}.ams-toolbar button,.ams-primary{background:#d6b269;color:#17130b;border:1px solid #d6b269;border-radius:8px;padding:10px 13px;font-weight:800;font-size:10px;cursor:pointer}
       .ams-option{border:1px solid #34404a;background:#0d141b;border-radius:10px;margin:9px 0;padding:12px}.ams-option.selected{border-color:#d6b269}.ams-option-head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;color:#d6b269;margin-bottom:8px}.ams-option-head label{display:flex;align-items:center;gap:7px}.ams-option textarea{width:100%;box-sizing:border-box;min-height:105px;resize:vertical;background:#111b24;color:#f3f1eb;border:1px solid #3b4650;border-radius:8px;padding:11px;font:13px/1.55 inherit}.ams-option-actions{display:flex;justify-content:flex-end;margin-top:7px}.ams-option-actions button,.ams-secondary{background:#202b35;color:#eee;border:1px solid #4b5964;border-radius:7px;padding:8px 11px;font-size:10px;cursor:pointer}
       .ams-foot{font-size:11px;color:#aab3bc;line-height:1.55}.ams-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap}.ams-actions button{cursor:pointer;border-radius:8px;padding:11px 14px;font-size:10px;font-weight:800}.ams-actions .ams-primary{background:#d6b269;color:#17130b;border:1px solid #d6b269}.ams-actions .ams-secondary{background:#202b35;color:#eee;border:1px solid #4b5964}#ams-status{font-size:11px;color:#d6b269;min-height:17px}
@@ -121,6 +131,14 @@
     modal.addEventListener("click", e => { if (e.target.closest("[data-ams-close]")) modal.classList.remove("open"); });
     document.addEventListener("keydown", e => { if (e.key === "Escape") modal?.classList.remove("open"); });
     modal.querySelector("#ams-generate").addEventListener("click", generate);
+    modal.querySelector("#ams-send-prompt").addEventListener("click", () => {
+      const prompt = modal.querySelector("#ams-prompt").value.trim();
+      if (!prompt) { status("Type what you want me to write first."); modal.querySelector("#ams-prompt").focus(); return; }
+      interpretPrompt(prompt);
+    });
+    modal.querySelector("#ams-prompt").addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); modal.querySelector("#ams-send-prompt").click(); }
+    });
     modal.querySelector("#ams-copy-all").addEventListener("click", async () => {
       const all = Array.from(modal.querySelectorAll(".ams-option textarea")).map((x,i) => "OPTION " + (i+1) + "\n" + x.value).join("\n\n---\n\n");
       try { await navigator.clipboard.writeText(all); status("All three options copied."); } catch { status("Clipboard access was blocked. Copy the drafts manually."); }
@@ -158,6 +176,33 @@
       });
     });
     status("Generated 3 editable options. Choose one and review before sending.");
+  }
+  function interpretPrompt(prompt) {
+    const p = norm(prompt);
+    const set = (id,value) => { if (modal.querySelector("#"+id)) modal.querySelector("#"+id).value=value; };
+    let understood=[];
+    if (/data clean|data-clean|data entr|data entry|excel|spreadsheet|google sheets|power bi|analytics|dashboard|mis report/.test(p)) { set("ams-service","sheets"); understood.push("Excel / data services"); }
+    else if (/website|web development|landing page/.test(p)) { set("ams-service","website"); understood.push("website development"); }
+    else if (/social media|instagram|facebook|content calendar/.test(p)) { set("ams-service","social"); understood.push("social media"); }
+    else if (/reel|video|promotional/.test(p)) { set("ams-service","video"); understood.push("video / reels"); }
+    else if (/logo|graphic|poster|creative design/.test(p)) { set("ams-service","design"); understood.push("graphic design"); }
+    if (/follow.?up|following up|reminder/.test(p)) { set("ams-stage","followup"); understood.push("follow-up"); }
+    else if (/re.?engage|haven't heard|no response/.test(p)) { set("ams-stage","reengage"); understood.push("re-engagement"); }
+    else if (/price|pricing|quotation|quote|cost/.test(p)) { set("ams-stage","pricing"); understood.push("pricing reply"); }
+    else if (/interested|thanks for reply|replied/.test(p)) { set("ams-stage","interested"); understood.push("interested reply"); }
+    else if (/meeting|call|10.?minute|15.?minute/.test(p)) { set("ams-stage","meeting"); understood.push("call request"); }
+    else if (/first message|introduce|introduction|cold message|first contact/.test(p)) { set("ams-stage","first"); understood.push("first contact"); }
+    if (/short|brief|concise|one.?line/.test(p)) { set("ams-tone","short"); understood.push("short tone"); }
+    else if (/friendly|warm|casual/.test(p)) { set("ams-tone",/casual/.test(p)?"casual":"friendly"); understood.push("friendly tone"); }
+    else if (/persuasive|convincing|attract|compelling/.test(p)) { set("ams-tone","persuasive"); understood.push("persuasive tone"); }
+    else if (/professional|formal|polite/.test(p)) { set("ams-tone","professional"); understood.push("professional tone"); }
+    if (/instagram dm|instagram message/.test(p)) set("ams-channel","instagram");
+    else if (/email/.test(p)) set("ams-channel","email");
+    else if (/sms|text message/.test(p)) set("ams-channel","sms");
+    else if (/whatsapp|wa message/.test(p)) set("ams-channel","whatsapp");
+    modal.querySelector("#ams-understood").textContent = "I understood: " + (understood.length ? understood.join(", ") : "custom message request") + ". Prospect: " + (current.business || "your selected prospect") + ". You can adjust advanced controls if needed.";
+    generate();
+    status("Your instructions have been applied. Edit the draft before using it.");
   }
   function openFor(p) {
     ensureModal();

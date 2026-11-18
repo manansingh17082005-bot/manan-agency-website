@@ -49,13 +49,13 @@ function alphaAI(){
  const leads=[];
  const totalLeads="—";
  const interested="—", fresh="—", due="—";
- db.from("agency_leads").select("id,status,follow_up_date",{count:"exact"}).order("created_at",{ascending:false}).limit(300)
+ db.from("agency_leads").select("id,status",{count:"exact"}).order("created_at",{ascending:false}).limit(300)
   .then(({data,count,error})=>{
    if(error) throw error;
    const records=data||[];
    const qualified=records.filter(x=>["qualified","interested","won"].includes(String(x.status||"").toLowerCase())).length;
    const freshCount=records.filter(x=>["new","to research"].includes(String(x.status||"").toLowerCase())).length;
-   const dueCount=records.filter(x=>x.follow_up_date&&new Date(x.follow_up_date+"T23:59:59")<=new Date()).length;
+   const dueCount=0; // agency_leads currently has no follow_up_date column; enable follow-up counts after schema migration.
    const nodes=document.querySelectorAll("#viewRoot > .metrics .metric strong");
    if(nodes[0]) nodes[0].textContent=String(count??records.length);
    if(nodes[1]) nodes[1].textContent=String(freshCount);

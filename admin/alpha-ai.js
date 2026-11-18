@@ -58,7 +58,7 @@
     try {
       const [rr, dr] = await Promise.allSettled([
         timed(db.from("alpha_agent_runs").select("id,status,summary,inserted_count,started_at").order("started_at", {ascending:false}).limit(5), "Discovery history"),
-        timed(db.from("alpha_agent_drafts").select("id,subject,message,status,created_at,agency_leads(business_name)").order("created_at", {ascending:false}).limit(5), "Outreach drafts")
+        timed(db.from("alpha_agent_drafts").select("id,lead_id,subject,message,status,created_at").order("created_at", {ascending:false}).limit(5), "Outreach drafts")
       ]);
       if (rr.status === "fulfilled" && !rr.value.error) {
         const data = rr.value.data || [];
@@ -69,7 +69,7 @@
       }
       if (dr.status === "fulfilled" && !dr.value.error) {
         const data = dr.value.data || [];
-        if (draftsNode) draftsNode.innerHTML = data.length ? data.map(d => '<article class="agent-draft"><b>'+esc(d.subject||"Outreach draft")+'</b><small>'+esc(d.agency_leads?.business_name||"Prospect")+' · '+esc(d.status)+'</small><p>'+esc(d.message)+'</p></article>').join("") : '<p class="note">Drafts will appear after discovery.</p>';
+        if (draftsNode) draftsNode.innerHTML = data.length ? data.map(d => '<article class="agent-draft"><b>'+esc(d.subject||"Outreach draft")+'</b><small>Prospect · '+esc(d.status||"draft")+'</small><p>'+esc(d.message)+'</p></article>').join("") : '<p class="note">Drafts will appear after discovery.</p>';
       } else if (draftsNode) {
         const err = dr.status === "rejected" ? dr.reason : dr.value.error;
         draftsNode.innerHTML = '<p class="note">Could not load drafts: '+esc(err?.message || err || "Unknown error")+'</p>';

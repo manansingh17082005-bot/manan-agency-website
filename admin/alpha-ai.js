@@ -51,18 +51,30 @@
   async function loadHistory(force = false) {
     if (historyBusy || !$("#alphaAiHistory") || (historyLoaded && !force)) return;
     historyBusy = true;
+    const runsNode = $("#alphaAiRuns"), draftsNode = $("#alphaAiDrafts");
+    if (runsNode) runsNode.innerHTML = '<p class="note">Loading activity…</p>';
+    if (draftsNode) draftsNode.innerHTML = '<p class="note">Loading drafts…</p>';
+    const timed = (promise, label) => Promise.race([promise, new Promise((_, reject) => setTimeout(() => reject(new Error(label + " timed out. Check connection/Supabase access and press REFRESH.")), 12000))]);
     try {
-      const [runs, drafts] = await Promise.all([
-        db.from("alpha_agent_runs").select("id,status,summary,inserted_count,started_at").order("started_at", {ascending:false}).limit(5),
-        db.from("alpha_agent_drafts").select("id,subject,message,status,created_at,agency_leads(business_name)").order("created_at", {ascending:false}).limit(5)
+      const [rr, dr] = await Promise.allSettled([
+        timed(db.from("alpha_agent_runs").select("id,status,summary,inserted_count,started_at").order("started_at", {ascending:false}).limit(5), "Discovery history"),
+        timed(db.from("alpha_agent_drafts").select("id,subject,message,status,created_at,agency_leads(business_name)").order("created_at", {ascending:false}).limit(5), "Outreach drafts")
       ]);
-      if (runs.error) throw runs.error;
-      if (drafts.error) throw drafts.error;
-      $("#alphaAiRuns").innerHTML = runs.data.length ? runs.data.map(r => '<div class="record"><div><strong>'+esc(r.status.toUpperCase())+'</strong><p>'+esc(r.summary || "Lead discovery run")+'</p><small>'+new Date(r.started_at).toLocaleString("en-IN")+'</small></div><span>'+Number(r.inserted_count||0)+' saved</span></div>').join("") : '<p class="note">No runs yet. Start your first scan.</p>';
-      $("#alphaAiDrafts").innerHTML = drafts.data.length ? drafts.data.map(d => '<article class="agent-draft"><b>'+esc(d.subject||"Outreach draft")+'</b><small>'+esc(d.agency_leads?.business_name||"Prospect")+' · '+esc(d.status)+'</small><p>'+esc(d.message)+'</p></article>').join("") : '<p class="note">Drafts will appear after discovery.</p>';
-      historyLoaded = true;
-    } catch (e) {
-      if ($("#alphaAiRuns")) $("#alphaAiRuns").innerHTML = '<p class="note">'+esc(e.message||e)+'</p>';
+      if (rr.status === "fulfilled" && !rr.value.error) {
+        const data = rr.value.data || [];
+        if (runsNode) runsNode.innerHTML = data.length ? data.map(r => '<div class="record"><div><strong>'+esc(String(r.status || "unknown").toUpperCase())+'</strong><p>'+esc(r.summary || "Lead discovery run")+'</p><small>'+(r.started_at ? new Date(r.started_at).toLocaleString("en-IN") : "")+'</small></div><span>'+Number(r.inserted_count||0)+' saved</span></div>').join("") : '<p class="note">No runs yet. Start your first scan.</p>';
+      } else if (runsNode) {
+        const err = rr.status === "rejected" ? rr.reason : rr.value.error;
+        runsNode.innerHTML = '<p class="note">Could not load discovery history: '+esc(err?.message || err || "Unknown error")+'</p>';
+      }
+      if (dr.status === "fulfilled" && !dr.value.error) {
+        const data = dr.value.data || [];
+        if (draftsNode) draftsNode.innerHTML = data.length ? data.map(d => '<article class="agent-draft"><b>'+esc(d.subject||"Outreach draft")+'</b><small>'+esc(d.agency_leads?.business_name||"Prospect")+' · '+esc(d.status)+'</small><p>'+esc(d.message)+'</p></article>').join("") : '<p class="note">Drafts will appear after discovery.</p>';
+      } else if (draftsNode) {
+        const err = dr.status === "rejected" ? dr.reason : dr.value.error;
+        draftsNode.innerHTML = '<p class="note">Could not load drafts: '+esc(err?.message || err || "Unknown error")+'</p>';
+      }
+      historyLoaded = rr.status === "fulfilled" || dr.status === "fulfilled";
     } finally { historyBusy = false; }
   }
   document.addEventListener("submit", e => {

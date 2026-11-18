@@ -75,7 +75,14 @@
         draftsNode.innerHTML = '<p class="note">Could not load drafts: '+esc(err?.message || err || "Unknown error")+'</p>';
       }
       historyLoaded = rr.status === "fulfilled" || dr.status === "fulfilled";
-    } finally { historyBusy = false; }
+    } finally {
+      historyBusy = false;
+      // The admin view can be replaced while these requests are in flight.
+      // If that happened, the old detached panel must not leave the new one stuck on "Loading activity…".
+      if (runsNode && !runsNode.isConnected && $("#alphaAiHistory")) {
+        Promise.resolve().then(() => loadHistory(true));
+      }
+    }
   }
   document.addEventListener("submit", e => {
     if (e.target?.id !== "alphaAiConfigForm") return;
